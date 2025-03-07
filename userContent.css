@@ -1,0 +1,9 @@
+/* about:home - about:newtab */
+@-moz-document
+  url-prefix(about:newtab),
+  url-prefix(about:home) {
+
+  .top-site-outer .title {
+    display: none !important;
+  }
+}

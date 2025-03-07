@@ -1,11 +1,11 @@
 @for $hue from 0 through 359 {
-    tab[hue="#{$hue}"] .tab-content {
+    tab[hue="#{$hue}"] .tab-background {
         background: linear-gradient(to bottom right, hsl($hue, 100, 70), hsl($hue, 100, 90)) !important;
     }
 }
 
 @for $hue from 0 through 359 {
-    tab[hue="#{$hue}"][selected] .tab-content, tab[hue="#{$hue}"]:hover .tab-content {
+    tab[hue="#{$hue}"][selected] .tab-background, tab[hue="#{$hue}"]:hover .tab-background {
         background: linear-gradient(to bottom right, hsl($hue, 100, 60), hsl($hue, 100, 80)) !important;
     }
 }
