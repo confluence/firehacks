@@ -1,13 +1,32 @@
 @import url("tabColour.css");
 
+/* Make the pinned tabs narrower (default is HUGE) */
 :root {
   --tab-pinned-min-width-expanded: 30px !important;
 }
 
+/* Bold selected and hover tab text */
 .tabbrowser-tab[selected], .tabbrowser-tab:hover {
   font-weight: 700 !important;
 }
 
+/* Italicise unread tabs (depends on function in JS) */
 .tabbrowser-tab[unread]:not([skipbackgroundnotify]) {
   font-style: italic !important;
+}
+
+/* Reduce tab vertical padding */
+#tabbrowser-tabs[orient="vertical"] {
+  & .tabbrowser-tab {
+    padding-block: 2px !important;
+  }
+}
+
+/* No idea WTF is up with this; the default of 5 messes up the pinned tabs. */
+#tabbrowser-tabs[orient="vertical"] {
+  & .tabbrowser-tab {
+    &:nth-child(1 of :not([hidden])) {
+      padding-block-start: 2px !important;
+    }
+  }
 }
