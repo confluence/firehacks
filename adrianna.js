@@ -2,6 +2,7 @@
 // loader works in 134+; adapted from:
 // https://www.userchrome.org/what-is-userchrome-js.html#combinedloader
 // https://support.mozilla.org/mk/questions/1484805
+
 function applyCustomScriptToNewWindow(win){
     let searchbar = win.document.getElementById("searchbar");
     let urlbar = win.gURLBar;
@@ -30,6 +31,8 @@ function applyCustomScriptToNewWindow(win){
         let domain;
         try {
             domain = tab.linkedBrowser.currentURI.host;
+            // TODO proper handling for subdomains
+            // TODO do pips here
         } catch(e) {
             // No host; assume an about: page or similar (TODO make this more granular; use uri for about and protocol otherwise)
             domain = tab.linkedBrowser.currentURI.spec;
@@ -41,7 +44,7 @@ function applyCustomScriptToNewWindow(win){
             hash = (hash ^ hash >>> 17) >>> 0;
         }
         
-        tab.setAttribute("hue", hash % 360);
+        tab.querySelector(".tab-background").style.setProperty("--firehacks-hue-domain", `${hash % 360}deg`);
     }
     
     tabcontainer.addEventListener('TabAttrModified', function(event) {
