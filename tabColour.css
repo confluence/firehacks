@@ -6,16 +6,10 @@ tab .tab-background {
   --firehacks-lightness-domain-from: 70%;
   --firehacks-lightness-domain-to: 90%;
 
-  --firehacks-hue-subdomain: 0deg;
-  --firehacks-alpha-subdomain: 0%;
-
-  --firehacks-hue-path-a: 0deg;
-  --firehacks-alpha-path-a: 0%;
-
-  --firehacks-hue-path-b: 0deg;
-  --firehacks-alpha-path-b: 0%;
-
-  background: linear-gradient(to bottom right, hsl(var(--firehacks-hue-domain) var(--firehacks-saturation-domain) var(--firehacks-lightness-domain-from)), hsl(var(--firehacks-hue-domain) var(--firehacks-saturation-domain) var(--firehacks-lightness-domain-to))) !important;
+  background: linear-gradient(to bottom right,
+    hsl(var(--firehacks-hue-domain) var(--firehacks-saturation-domain) var(--firehacks-lightness-domain-from)),
+    hsl(var(--firehacks-hue-domain) var(--firehacks-saturation-domain) var(--firehacks-lightness-domain-to))
+  ) !important;
 }
 
 tab[selected] .tab-background, tab:hover .tab-background {

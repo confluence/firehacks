@@ -28,17 +28,17 @@ function applyCustomScriptToNewWindow(win){
     // set a hue on new tabs
         
     tabcontainer.setHueFromUrl = function(tab) {
+        let uri = tab.linkedBrowser.currentURI;
         let domain;
+
         try {
-            domain = tab.linkedBrowser.currentURI.host;
-            // TODO proper handling for subdomains
-            // TODO do pips here
+            domain = uri.host;
         } catch(e) {
-            // No host; assume an about: page or similar (TODO make this more granular; use uri for about and protocol otherwise)
-            domain = tab.linkedBrowser.currentURI.spec;
+            // No host; assume an about: page or similar
+            domain = uri.scheme;
         };
-        
-        // From TST-Colored-tabs TODO change the random number until most colours are nice? Reduce the number of hues for better distribution?
+
+        // From TST-Colored-tabs
         for(var i = 0, hash = 1; i < domain.length; i++) {
             hash = Math.imul(hash + domain.charCodeAt(i) | 0, 2654435761);
             hash = (hash ^ hash >>> 17) >>> 0;
@@ -54,7 +54,7 @@ function applyCustomScriptToNewWindow(win){
         tabcontainer.setHueFromUrl(event.target);
     });
     
-    // Restore unread tab property TODO can these also be listeners?
+    // Restore unread tab property
     
     tabcontainer._originalHandleNewTab = tabcontainer._handleNewTab;
     tabcontainer._handleNewTab = function(tab) {
