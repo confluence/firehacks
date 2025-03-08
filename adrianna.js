@@ -29,6 +29,10 @@ function applyCustomScriptToNewWindow(win){
         
     tabcontainer.setHueFromUrl = function(tab) {
         let uri = tab.linkedBrowser.currentURI;
+        if (tab._last_hue_uri !== undefined && tab._last_hue_uri === uri) {
+            return;
+        }
+        
         let domain;
 
         try {
@@ -44,13 +48,11 @@ function applyCustomScriptToNewWindow(win){
             hash = (hash ^ hash >>> 17) >>> 0;
         }
         
-        tab.querySelector(".tab-background").style.setProperty("--firehacks-hue-domain", `${hash % 360}deg`);
+        tab.querySelector(".tab-background").style.setProperty("--firehacks-hue", `${hash % 360}deg`);
+        tab._last_hue_uri = uri;
     }
     
     tabcontainer.addEventListener('TabAttrModified', function(event) {
-        if (!event.detail.changed.includes("label")) {
-            return;
-        }
         tabcontainer.setHueFromUrl(event.target);
     });
     

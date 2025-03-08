@@ -1,18 +1,18 @@
 /* Base tab colours */
 
 tab .tab-background {
-  --firehacks-hue-domain: 0deg;
-  --firehacks-saturation-domain: 100%;
-  --firehacks-lightness-domain-from: 70%;
-  --firehacks-lightness-domain-to: 90%;
+  --firehacks-hue: 0deg;
+  --firehacks-saturation: 100%;
+  --firehacks-lightness-from: 70%;
+  --firehacks-lightness-to: 90%;
 
   background: linear-gradient(to bottom right,
-    hsl(var(--firehacks-hue-domain) var(--firehacks-saturation-domain) var(--firehacks-lightness-domain-from)),
-    hsl(var(--firehacks-hue-domain) var(--firehacks-saturation-domain) var(--firehacks-lightness-domain-to))
+    hsl(var(--firehacks-hue) var(--firehacks-saturation) var(--firehacks-lightness-from)),
+    hsl(var(--firehacks-hue) var(--firehacks-saturation) var(--firehacks-lightness-to))
   ) !important;
 }
 
 tab[selected] .tab-background, tab:hover .tab-background {
-  --firehacks-lightness-domain-from: 60%;
-  --firehacks-lightness-domain-to: 80%;
+  --firehacks-lightness-from: 60%;
+  --firehacks-lightness-to: 80%;
 }
