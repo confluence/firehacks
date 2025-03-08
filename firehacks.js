@@ -1,4 +1,4 @@
-// adrianna.js -- single-file userChrome.js plus loader
+// firehacks.js -- single-file userChrome.js plus loader
 // loader works in 134+; adapted from:
 // https://www.userchrome.org/what-is-userchrome-js.html#combinedloader
 // https://support.mozilla.org/mk/questions/1484805
@@ -11,12 +11,12 @@ function applyCustomScriptToNewWindow(win){
     
     // Clear searchbar term after search and always open search in a background tab
     
-    searchbar._originalDoSearch = searchbar.doSearch;
+    searchbar._firehacks_originalDoSearch = searchbar.doSearch;
     searchbar.doSearch = function(aData, aWhere, aEngine, aParams, isOneOff = false) {
         if (aWhere == "tab") {
             aWhere = "tabshifted";
         }
-        this._originalDoSearch(aData, aWhere, aEngine, aParams, isOneOff);
+        this._firehacks_originalDoSearch(aData, aWhere, aEngine, aParams, isOneOff);
         this._textbox.value = "";
     }
     
@@ -27,9 +27,9 @@ function applyCustomScriptToNewWindow(win){
     
     // set a hue on new tabs
         
-    tabcontainer.setHueFromUrl = function(tab) {
+    tabcontainer._firehacks_setHueFromUrl = function(tab) {
         let uri = tab.linkedBrowser.currentURI;
-        if (tab._last_hue_uri !== undefined && tab._last_hue_uri === uri) {
+        if (tab._firehacks_lastHueURI !== undefined && tab._firehacks_lastHueURI === uri) {
             return;
         }
         
@@ -49,25 +49,25 @@ function applyCustomScriptToNewWindow(win){
         }
         
         tab.querySelector(".tab-background").style.setProperty("--firehacks-hue", `${hash % 360}deg`);
-        tab._last_hue_uri = uri;
+        tab._firehacks_lastHueURI = uri;
     }
     
     tabcontainer.addEventListener('TabAttrModified', function(event) {
-        tabcontainer.setHueFromUrl(event.target);
+        tabcontainer._firehacks_setHueFromUrl(event.target);
     });
     
     // Restore unread tab property
     
-    tabcontainer._originalHandleNewTab = tabcontainer._handleNewTab;
+    tabcontainer._firehacks_originalHandleNewTab = tabcontainer._handleNewTab;
     tabcontainer._handleNewTab = function(tab) {
         tab.setAttribute("unread", true);
         tabbrowser._tabAttrModified(tab, ["unread"]);
-        this._originalHandleNewTab(tab);
+        this._firehacks_originalHandleNewTab(tab);
     }
     
-    tabcontainer._originalHandleTabSelect = tabcontainer._handleTabSelect;
+    tabcontainer._firehacks_originalHandleTabSelect = tabcontainer._handleTabSelect;
     tabcontainer._handleTabSelect = function(aInstant) {
-        this._originalHandleTabSelect(aInstant);
+        this._firehacks_originalHandleTabSelect(aInstant);
         this.selectedItem.removeAttribute("unread");
         tabbrowser._tabAttrModified(this.selectedItem, ["unread"]);
     }
