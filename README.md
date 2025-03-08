@@ -42,8 +42,16 @@ I recommend enabling the Browser Toolbox, and using it in conjunction with the b
 
 There are multiple generic loaders which restore the functionality of loading arbitrary scripts from the `chrome` directory in your profile, and collections of updated scripts made to work with them. I decided that they were overengineered and undersecured for my simple use case, hence this project.
 
+## Possible future work
+
+* Extend mouse gestures only to restricted pages
+* Basic related tab grouping / indentation; would need to integrate with reordering
+* Refactoring into a separate object
+* Integration with other extensions
+
 ## Recommended related extensions
 
 * [uniqtabs](https://addons.mozilla.org/en-US/firefox/addon/uniqtabs/), a small extension that deduplicates and sorts your tabs. It didn't play nicely with the vertical tab extension, but it works great with the native tabs and the colours and now I use it all the time.
+* [Foxy Gestures](https://addons.mozilla.org/en-US/firefox/addon/foxy-gestures/) for mouse gestures.
 * [Violentmonkey](https://addons.mozilla.org/en-US/firefox/addon/violentmonkey/), for user content scripts.
 * [Stylus](https://addons.mozilla.org/en-US/firefox/addon/styl-us/), for user content styles.
