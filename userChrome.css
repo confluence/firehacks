@@ -22,7 +22,7 @@
   }
 }
 
-/* No idea WTF is up with this; the default of 5 messes up the pinned tabs. */
+/* The default is different even for pinned tabs, and messes them up. */
 #tabbrowser-tabs[orient="vertical"] {
   & .tabbrowser-tab {
     &:nth-child(1 of :not([hidden])) {
