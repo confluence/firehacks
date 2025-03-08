@@ -11,9 +11,11 @@ function applyFirehacks(window){
 
     let defaultPrefs = Services.prefs.getDefaultBranch("extensions.firehacks.");
     defaultPrefs.setIntPref("num_hues", 360);
+    defaultPrefs.setIntPref("hue_offset", 0);
 
     let prefs = Services.prefs.getBranch("extensions.firehacks.");
-    let num_hues = Math.min(prefs.getIntPref("num_hues"), 360);
+    let num_hues = Math.max(Math.min(prefs.getIntPref("num_hues"), 360), 1);
+    let hue_offset = prefs.getIntPref("hue_offset");
 
     // Clear searchbar term after search and always open search in a background tab
 
@@ -51,6 +53,7 @@ function applyFirehacks(window){
         let digest = await crypto.subtle.digest("SHA-1", new TextEncoder().encode(domain));
         let hash = new Uint32Array(digest.slice(0, 4))[0]; // truncate to 4 bytes = 32 bits
         let hue = Math.round((hash % num_hues) * 360 / num_hues);
+        hue = (hue + hue_offset) % 360;
 
         tab.querySelector(".tab-background").style.setProperty("--firehacks-hue", `${hue}deg`);
         tab._firehacks_lastHueURI = uri;

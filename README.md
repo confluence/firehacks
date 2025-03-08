@@ -29,8 +29,10 @@ You need root access. I have no idea how to set this up on any system except my 
 * `autoconfig.js` has to be in `/defaults/pref/` relative to that directory.
 * All the CSS files go in the `chrome` subdirectory of your Firefox profile.
 * You have to enable `toolkit.legacyUserProfileCustomizations.stylesheets` in `about:config`.
-* There is one (1) preference for these tweaks: `extensions.firehacks.num_hues`; how many different hues to use to colour tabs.
-* If you change anything in any of these files, or the preference, you have to restart Firefox for the change to be applied.
+* There are two preferences for these tweaks:
+ * `extensions.firehacks.num_hues`: how many different hues to use to colour tabs (minimum: 1; maximum: 360)
+ * `extensions.firehacks.hue_offset`: an offset to apply to the hues (in degrees)
+* If you change anything in any of these files, or the preferences, you have to restart Firefox for the changes to be applied.
 
 ## How to develop
 
