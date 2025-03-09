@@ -44,6 +44,7 @@ There are multiple generic loaders which restore the functionality of loading ar
 
 ## Possible future work
 
+* Make prefs apply immediately, for easier testing
 * Extend mouse gestures only to restricted pages
 * Basic related tab grouping / indentation; would need to integrate with reordering
 * Refactoring into a separate object
