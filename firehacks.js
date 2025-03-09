@@ -39,6 +39,8 @@ function applyFirehacks(window){
     // Inspired by ChromaTabs and TST Colored Tabs
     // Hash algorithm adapted from SHA1 suggestion in https://stackoverflow.com/questions/3426404/create-a-hexadecimal-colour-based-on-a-string-with-javascript
     
+    // Additional overlays for first two path elements on GitHub 
+    
     tabcontainer._firehacks_getHue = async function(toHash) {
         let digest = await crypto.subtle.digest("SHA-1", new TextEncoder().encode(toHash));
         let hash = new Uint32Array(digest.slice(0, 4))[0]; // truncate to 4 bytes = 32 bits
@@ -77,6 +79,22 @@ function applyFirehacks(window){
             bgStyle.setProperty("--firehacks-subdomain-hue", `${subdomainHue}deg`);
             bgStyle.setProperty("--firehacks-subdomain-alpha", "100%");
         }
+        
+        // GitHub; first two parts of path if they exist
+        let ghMatch = /https:\/\/github.com\/(.*?)(?:\/(.*?))?(?:\/.*|$)/.exec(uri.spec);
+        if (ghMatch) {
+            let [ghOne, ghTwo] = ghMatch.slice(1);
+            if (ghOne) {
+                let ghHueOne = await this._firehacks_getHue(ghOne);
+                bgStyle.setProperty("--firehacks-github-hue-one", `${ghHueOne}deg`);
+                bgStyle.setProperty("--firehacks-github-alpha-one", "100%");
+            }
+            if (ghTwo) {
+                let ghHueTwo = await this._firehacks_getHue(ghTwo);
+                bgStyle.setProperty("--firehacks-github-hue-two", `${ghHueTwo}deg`);
+                bgStyle.setProperty("--firehacks-github-alpha-two", "100%");
+            }
+        }
     }
 
     tabcontainer.addEventListener('TabAttrModified', function(event) {
@@ -89,7 +107,6 @@ function applyFirehacks(window){
     tabcontainer._firehacks_originalHandleNewTab = tabcontainer._handleNewTab;
     tabcontainer._handleNewTab = function(tab) {
         tab.setAttribute("unread", true);
-        tabbrowser._tabAttrModified(tab, ["unread"]);
         this._firehacks_originalHandleNewTab(tab);
     }
 
@@ -97,7 +114,6 @@ function applyFirehacks(window){
     tabcontainer._handleTabSelect = function(aInstant) {
         this._firehacks_originalHandleTabSelect(aInstant);
         this.selectedItem.removeAttribute("unread");
-        tabbrowser._tabAttrModified(this.selectedItem, ["unread"]);
     }
 }
 

@@ -9,8 +9,25 @@ tab .tab-background {
   --firehacks-subdomain-hue: 0deg;
   --firehacks-subdomain-alpha: 0%;
   --firehacks-subdomain-stop: 20px;
+  
+  --firehacks-github-hue-one: 0deg;
+  --firehacks-github-hue-two: 0deg;
+  --firehacks-github-alpha-one: 0%;
+  --firehacks-github-alpha-two: 0%;
+  
+  /* This gradient is right to left! */
+  --firehacks-github-stop-one: 20px;
+  --firehacks-github-stop-two: 10px;
 
-  background: linear-gradient(135deg,
+  background: linear-gradient(315deg,
+    hsl(var(--firehacks-github-hue-two) var(--firehacks-saturation) var(--firehacks-lightness-to) / var(--firehacks-github-alpha-two)),
+    hsl(var(--firehacks-github-hue-two) var(--firehacks-saturation) var(--firehacks-lightness-from) / var(--firehacks-github-alpha-two)) var(--firehacks-github-stop-two),
+    transparent var(--firehacks-github-stop-two) 100%
+  ), linear-gradient(315deg,
+    hsl(var(--firehacks-github-hue-one) var(--firehacks-saturation) var(--firehacks-lightness-to) / var(--firehacks-github-alpha-one)),
+    hsl(var(--firehacks-github-hue-one) var(--firehacks-saturation) var(--firehacks-lightness-from) / var(--firehacks-github-alpha-one)) var(--firehacks-github-stop-one),
+    transparent var(--firehacks-github-stop-one) 100%
+  ), linear-gradient(135deg,
     hsl(var(--firehacks-subdomain-hue) var(--firehacks-saturation) var(--firehacks-lightness-from) / var(--firehacks-subdomain-alpha)),
     hsl(var(--firehacks-subdomain-hue) var(--firehacks-saturation) var(--firehacks-lightness-to) / var(--firehacks-subdomain-alpha)) var(--firehacks-subdomain-stop),
     transparent var(--firehacks-subdomain-stop) 100%
@@ -23,6 +40,8 @@ tab .tab-background {
 
 tab[pinned] .tab-background {
   --firehacks-subdomain-stop: 25%;
+  --firehacks-github-stop-one: 0px;
+  --firehacks-github-stop-two: 0px;
 }
 
 tab[selected] .tab-background, tab:hover .tab-background {

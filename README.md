@@ -13,6 +13,7 @@ This is my personal set of tweaks, which I intend to maintain only for the lates
 ## Features
 
 * Tab backgrounds are coloured by base domain, with an overlaid second colour for subdomains (or by scheme if there is no domain). `www.` is stripped off.
+* GitHub tabs are overlaid with colours for the first two path elements (usually account and repository).
 * Clicking once in the URL bar or search bar never selects the contents.
 * The search term is cleared from the search bar after the search is performed.
 * Searches performed from the search bar always load in background tabs and never switch away from the currently selected tab.
