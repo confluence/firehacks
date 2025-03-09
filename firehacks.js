@@ -10,12 +10,12 @@ function applyFirehacks(window){
     let tabcontainer = tabbrowser.tabContainer;
 
     let defaultPrefs = Services.prefs.getDefaultBranch("extensions.firehacks.");
-    defaultPrefs.setIntPref("num_hues", 360);
-    defaultPrefs.setIntPref("hue_offset", 0);
+    defaultPrefs.setIntPref("numHues", 360);
+    defaultPrefs.setIntPref("hueOffset", 0);
 
     let prefs = Services.prefs.getBranch("extensions.firehacks.");
-    let num_hues = Math.max(Math.min(prefs.getIntPref("num_hues"), 360), 1);
-    let hue_offset = prefs.getIntPref("hue_offset");
+    let numHues = Math.max(Math.min(prefs.getIntPref("numHues"), 360), 1);
+    let hueOffset = prefs.getIntPref("hueOffset");
 
     // Clear searchbar term after search and always open search in a background tab
     // Updated from legacy scripts
@@ -41,11 +41,11 @@ function applyFirehacks(window){
     
     // Additional overlays for first two path elements on GitHub 
     
-    tabcontainer._firehacks_getHue = async function(toHash) {
+    tabcontainer._firehacks_getHue = async function(toHash, num = numHues, offset = hueOffset) {
         let digest = await crypto.subtle.digest("SHA-1", new TextEncoder().encode(toHash));
         let hash = new Uint32Array(digest.slice(0, 4))[0]; // truncate to 4 bytes = 32 bits
-        let hue = Math.round((hash % num_hues) * 360 / num_hues);
-        return hue + hue_offset;
+        let hue = Math.round((hash % num) * 360 / num);
+        return hue + offset;
     }
 
     tabcontainer._firehacks_setHueFromUrl = async function(event) {
@@ -86,12 +86,12 @@ function applyFirehacks(window){
         if (ghMatch) {
             let [ghOne, ghTwo] = ghMatch.slice(1);
             if (ghOne) {
-                let ghHueOne = await this._firehacks_getHue(ghOne);
+                let ghHueOne = await this._firehacks_getHue(ghOne, 45);
                 bgStyle.setProperty("--firehacks-github-hue-one", `${ghHueOne}deg`);
                 bgStyle.setProperty("--firehacks-github-alpha-one", "100%");
             }
             if (ghTwo) {
-                let ghHueTwo = await this._firehacks_getHue(ghTwo);
+                let ghHueTwo = await this._firehacks_getHue(ghTwo, 45);
                 bgStyle.setProperty("--firehacks-github-hue-two", `${ghHueTwo}deg`);
                 bgStyle.setProperty("--firehacks-github-alpha-two", "100%");
             }
