@@ -2,7 +2,7 @@
 
 ## What is this?
 
-A very minimalist collection of persistent CSS and JS customisations of Firefox which bypass the limited API which modern extensions have to follow (a change which caused a great extinction event of user control over the interface).
+A very minimalist collection of persistent CSS and JS customisations of Firefox that bypass the limited modern extension API (which caused a great extinction event of user control over the interface).
 
 To celebrate the arrival of native vertical tabs in Firefox (only about 20 years late) I got rid of my third-party tab extension, and immediately missed the lack of per-domain colours.
 
