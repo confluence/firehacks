@@ -5,11 +5,24 @@ tab .tab-background {
   --firehacks-saturation: 100%;
   --firehacks-lightness-from: 70%;
   --firehacks-lightness-to: 90%;
+  
+  --firehacks-subdomain-hue: 0deg;
+  --firehacks-subdomain-alpha: 0%;
+  --firehacks-subdomain-stop: 20px;
 
-  background: linear-gradient(to bottom right,
+  background: linear-gradient(135deg,
+    hsl(var(--firehacks-subdomain-hue) var(--firehacks-saturation) var(--firehacks-lightness-from) / var(--firehacks-subdomain-alpha)),
+    hsl(var(--firehacks-subdomain-hue) var(--firehacks-saturation) var(--firehacks-lightness-to) / var(--firehacks-subdomain-alpha)) var(--firehacks-subdomain-stop),
+    transparent var(--firehacks-subdomain-stop) 100%
+  ),
+  linear-gradient(135deg,
     hsl(var(--firehacks-hue) var(--firehacks-saturation) var(--firehacks-lightness-from)),
     hsl(var(--firehacks-hue) var(--firehacks-saturation) var(--firehacks-lightness-to))
   ) !important;
+}
+
+tab[pinned] .tab-background {
+  --firehacks-subdomain-stop: 25%;
 }
 
 tab[selected] .tab-background, tab:hover .tab-background {

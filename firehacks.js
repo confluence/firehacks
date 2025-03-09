@@ -38,29 +38,45 @@ function applyFirehacks(window){
     // Set a hue on new tabs
     // Inspired by ChromaTabs and TST Colored Tabs
     // Hash algorithm adapted from SHA1 suggestion in https://stackoverflow.com/questions/3426404/create-a-hexadecimal-colour-based-on-a-string-with-javascript
+    
+    tabcontainer._firehacks_getHue = async function(toHash) {
+        let digest = await crypto.subtle.digest("SHA-1", new TextEncoder().encode(toHash));
+        let hash = new Uint32Array(digest.slice(0, 4))[0]; // truncate to 4 bytes = 32 bits
+        let hue = Math.round((hash % num_hues) * 360 / num_hues);
+        return hue + hue_offset;
+    }
 
     tabcontainer._firehacks_setHueFromUrl = async function(tab) {
         let uri = tab.linkedBrowser.currentURI;
         if (tab._firehacks_lastHueURI === uri) {
             return;
         }
-
-        let domain;
-
-        try {
-            domain = uri.host;
-        } catch(e) {
-            // No host; assume an about: page or similar
-            domain = uri.scheme;
-        };
-
-        let digest = await crypto.subtle.digest("SHA-1", new TextEncoder().encode(domain));
-        let hash = new Uint32Array(digest.slice(0, 4))[0]; // truncate to 4 bytes = 32 bits
-        let hue = Math.round((hash % num_hues) * 360 / num_hues);
-        hue = (hue + hue_offset) % 360;
-
-        tab.querySelector(".tab-background").style.setProperty("--firehacks-hue", `${hue}deg`);
         tab._firehacks_lastHueURI = uri;
+        
+        let toHash, toHashSubdomain;
+        
+        try {
+            let host = uri.host;
+            let baseDomain = Services.eTLD.getBaseDomainFromHost(host);
+            let subdomain = host.replace(new RegExp(`\.?${baseDomain}$`), "").replace(/^www\.?/, "");
+            [toHash, toHashSubdomain] = [baseDomain, subdomain];
+        } catch(e) {
+            if (e.result == Cr.NS_ERROR_FAILURE) {
+                toHash = uri.scheme;
+            } else if (e.result == Cr.NS_ERROR_HOST_IS_IP_ADDRESS) {
+                toHash = uri.host;
+            }
+        };
+        
+        let bgStyle = tab.querySelector(".tab-background").style;
+        let hue = await this._firehacks_getHue(toHash);
+        bgStyle.setProperty("--firehacks-hue", `${hue}deg`);
+        
+        if (toHashSubdomain) {
+            let subdomainHue = await this._firehacks_getHue(toHashSubdomain);
+            bgStyle.setProperty("--firehacks-subdomain-hue", `${subdomainHue}deg`);
+            bgStyle.setProperty("--firehacks-subdomain-alpha", "100%");
+        }
     }
 
     tabcontainer.addEventListener('TabAttrModified', function(event) {
@@ -86,8 +102,9 @@ function applyFirehacks(window){
 }
 
 try {
+    let {classes: Cc, interfaces: Ci, utils: Cu, results: Cr, manager: Cm} = Components;
     const Services = globalThis.Services;
-    Components.utils.importGlobalProperties(['crypto', 'TextEncoder']);
+    Cu.importGlobalProperties(['crypto', 'TextEncoder']);
 
     function ConfigFirehacks() {
         Services.obs.addObserver(this, 'chrome-document-global-created', false);
@@ -115,5 +132,5 @@ try {
         new ConfigFirehacks();
     }
 } catch(e) {
-    Components.utils.reportError(e);
+    Cu.reportError(e);
 };
