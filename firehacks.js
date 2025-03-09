@@ -23,10 +23,11 @@ function applyFirehacks(window){
     searchbar._firehacks_originalDoSearch = searchbar.doSearch;
     searchbar.doSearch = function(aData, aWhere, aEngine, aParams, isOneOff = false) {
         if (aWhere == "tab") {
-            aWhere = "tabshifted";
+            aParams.inBackground = true;
         }
         this._firehacks_originalDoSearch(aData, aWhere, aEngine, aParams, isOneOff);
         this._textbox.value = "";
+        window.gBrowser.selectedBrowser.focus();
     }
 
     // Never select all when clicking in urlbar or searchbar
