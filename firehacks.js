@@ -18,6 +18,7 @@ function applyFirehacks(window){
     let hue_offset = prefs.getIntPref("hue_offset");
 
     // Clear searchbar term after search and always open search in a background tab
+    // Updated from legacy scripts
 
     searchbar._firehacks_originalDoSearch = searchbar.doSearch;
     searchbar.doSearch = function(aData, aWhere, aEngine, aParams, isOneOff = false) {
@@ -29,11 +30,14 @@ function applyFirehacks(window){
     }
 
     // Never select all when clicking in urlbar or searchbar
+    // Thanks to https://github.com/SebastianSimon/firefox-omni-tweaks for pointing me in the right direction
 
     searchbar._maybeSelectAll = function() {}
     urlbar._maybeSelectAll = function() {}
 
-    // set a hue on new tabs
+    // Set a hue on new tabs
+    // Inspired by ChromaTabs and TST Colored Tabs
+    // Hash algorithm adapted from SHA1 suggestion in https://stackoverflow.com/questions/3426404/create-a-hexadecimal-colour-based-on-a-string-with-javascript
 
     tabcontainer._firehacks_setHueFromUrl = async function(tab) {
         let uri = tab.linkedBrowser.currentURI;
@@ -64,6 +68,7 @@ function applyFirehacks(window){
     });
 
     // Restore unread tab property
+    // Partial reversal of https://bugzilla.mozilla.org/show_bug.cgi?id=1453957
 
     tabcontainer._firehacks_originalHandleNewTab = tabcontainer._handleNewTab;
     tabcontainer._handleNewTab = function(tab) {
