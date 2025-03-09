@@ -48,12 +48,13 @@ function applyFirehacks(window){
         return hue + hue_offset;
     }
 
-    tabcontainer._firehacks_setHueFromUrl = async function(tab) {
+    tabcontainer._firehacks_setHueFromUrl = async function(event) {
+        let tab = event.target;
         let uri = tab.linkedBrowser.currentURI;
-        if (tab._firehacks_lastHueURI === uri) {
+        if (event.detail.changed.includes("visuallyselected") || tab._firehacks_lastHueURI === uri.spec) {
             return;
         }
-        tab._firehacks_lastHueURI = uri;
+        tab._firehacks_lastHueURI = uri.spec;
         
         let toHash, toHashSubdomain;
         
@@ -97,9 +98,7 @@ function applyFirehacks(window){
         }
     }
 
-    tabcontainer.addEventListener('TabAttrModified', function(event) {
-        tabcontainer._firehacks_setHueFromUrl(event.target);
-    });
+    tabcontainer.addEventListener('TabAttrModified', tabcontainer._firehacks_setHueFromUrl);
 
     // Restore unread tab property
     // Partial reversal of https://bugzilla.mozilla.org/show_bug.cgi?id=1453957
