@@ -16,7 +16,7 @@ tab .tab-background {
   --firehacks-github-alpha-two: 0%;
   
   /* This gradient is right to left! */
-  --firehacks-github-stop-one: 30px;
+  --firehacks-github-stop-one: 21px;
   --firehacks-github-stop-two: 30px;
 
   background: linear-gradient(315deg,
