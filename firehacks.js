@@ -80,22 +80,32 @@ function applyFirehacks(window){
             let subdomainHue = await this._firehacks_getHue(toHashSubdomain);
             bgStyle.setProperty("--firehacks-subdomain-hue", `${subdomainHue}deg`);
             bgStyle.setProperty("--firehacks-subdomain-alpha", "100%");
+        } else {
+            bgStyle.removeProperty("--firehacks-subdomain-hue");
+            bgStyle.removeProperty("--firehacks-subdomain-alpha");
         }
         
         // GitHub; first two parts of path if they exist
+        let ghOne, ghTwo;
         let ghMatch = /https:\/\/github.com\/(.*?)(?:\/(.*?))?(?:\/.*|$)/.exec(uri.spec);
         if (ghMatch) {
-            let [ghOne, ghTwo] = ghMatch.slice(1);
-            if (ghOne) {
-                let ghHueOne = await this._firehacks_getHue(ghOne, 45);
-                bgStyle.setProperty("--firehacks-github-hue-one", `${ghHueOne}deg`);
-                bgStyle.setProperty("--firehacks-github-alpha-one", "100%");
-            }
-            if (ghTwo) {
-                let ghHueTwo = await this._firehacks_getHue(ghTwo, 45);
-                bgStyle.setProperty("--firehacks-github-hue-two", `${ghHueTwo}deg`);
-                bgStyle.setProperty("--firehacks-github-alpha-two", "100%");
-            }
+            [ghOne, ghTwo] = ghMatch.slice(1);
+        }
+        if (ghOne) {
+            let ghHueOne = await this._firehacks_getHue(ghOne, 45);
+            bgStyle.setProperty("--firehacks-github-hue-one", `${ghHueOne}deg`);
+            bgStyle.setProperty("--firehacks-github-alpha-one", "100%");
+        } else {
+            bgStyle.removeProperty("--firehacks-github-hue-one");
+            bgStyle.removeProperty("--firehacks-github-alpha-one");
+        }
+        if (ghTwo) {
+            let ghHueTwo = await this._firehacks_getHue(ghTwo, 45);
+            bgStyle.setProperty("--firehacks-github-hue-two", `${ghHueTwo}deg`);
+            bgStyle.setProperty("--firehacks-github-alpha-two", "100%");
+        } else {
+            bgStyle.removeProperty("--firehacks-github-hue-two");
+            bgStyle.removeProperty("--firehacks-github-alpha-two");
         }
     }
 
