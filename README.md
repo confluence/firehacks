@@ -18,7 +18,7 @@ This is my personal set of tweaks, which I intend to maintain only for the lates
 * The search term is cleared from the search bar after the search is performed.
     * Focus is also always restored to the current tab.
 * Searches performed from the search bar that load in new tabs always load in background tabs and never switch focus away from the currently selected tab.
-    * This does not affect the search being opened in the current tab when it is blank, or searches from the URL bar opening int the current tab.
+    * This does not affect the search being opened in the current tab when it is blank, or searches from the URL bar opening in the current tab.
     * Context menu searches still switch focus to the new tab; I never use this feature, but maybe I'll fix it anyway for consistency.
 * Unread tabs have an `unread` attribute again and can be styled.
     * Tabs restored from a previous session start off as unread; you can exclude them with a different attribute.
@@ -49,7 +49,8 @@ There are multiple generic loaders which restore the functionality of loading ar
 
 ## Possible future work
 
-* Make prefs apply immediately, for easier testing
+* Prefs to turn unrelated hacks on and off
+* Make some prefs apply immediately, for easier testing
 * Extend mouse gestures only to restricted pages
 * Basic related tab grouping / indentation; would need to integrate with reordering
 * Refactoring into a separate object
