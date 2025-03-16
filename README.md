@@ -10,6 +10,8 @@ I found out that it's still possible to re-enable `userChrome.js` functionality 
 
 This is my personal set of tweaks, which I intend to maintain only for the latest version of Firefox on Ubuntu installed as a `deb` package from the Mozilla repo. Feel free to fork this repository and use these files as a starting point for your own tweaks, *entirely at your own risk*. These modifications are not officially supported by Mozilla. You might break something. Please back up your profile and don't run with scissors.
 
+<img align="right" src="screenshot.png">
+
 ## Features
 
 * Tab backgrounds are coloured by base domain, with an overlaid second colour for subdomains (or by scheme if there is no domain). `www.` is stripped off.
