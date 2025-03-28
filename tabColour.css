@@ -1,24 +1,37 @@
 /* Base tab colours */
 
 tab .tab-background {
+  /* This is overriden per element by the JS */
   --firehacks-hue: 0deg;
+  /* This never changes */
   --firehacks-saturation: 100%;
+  /* These are adjusted for selected/hover tabs */
   --firehacks-lightness-from: 70%;
   --firehacks-lightness-to: 90%;
   
+  /* These are used for subdomain highlights */
   --firehacks-subdomain-hue: 0deg;
   --firehacks-subdomain-alpha: 0%;
   --firehacks-subdomain-stop: 20px;
   
+  /* These are used for highlights for the first two GitHub path elements
+   * (Usually user/org and repo)
+   */
   --firehacks-github-hue-one: 0deg;
   --firehacks-github-hue-two: 0deg;
   --firehacks-github-alpha-one: 0%;
   --firehacks-github-alpha-two: 0%;
   
-  /* This gradient is right to left! */
+  /* Note that these gradients go right to left! */
   --firehacks-github-stop-one: 21px;
   --firehacks-github-stop-two: 30px;
 
+  /* These gradients are ordered from top to bottom:
+   * 4. GitHub highlight one (on top, so that it looks the same whether the second one exists or not)
+   * 3. GitHub highlight two
+   * 2. Subdomain highlight
+   * 1. Main domain colour
+   */
   background: linear-gradient(315deg,
     hsl(var(--firehacks-github-hue-one) var(--firehacks-saturation) var(--firehacks-lightness-to) / var(--firehacks-github-alpha-one)),
     hsl(var(--firehacks-github-hue-one) var(--firehacks-saturation) var(--firehacks-lightness-from) / var(--firehacks-github-alpha-one)) var(--firehacks-github-stop-one),
@@ -38,19 +51,20 @@ tab .tab-background {
   ) !important;
 }
 
+/* Hide the GitHub highlights and adjust the subdomain proportion in pinned tabs */
 tab[pinned] .tab-background {
   --firehacks-subdomain-stop: 25%;
   --firehacks-github-stop-one: 0px;
   --firehacks-github-stop-two: 0px;
 }
 
+/* Make selected / hover tabs darker */
 tab[selected] .tab-background, tab:hover .tab-background {
   --firehacks-lightness-from: 60%;
   --firehacks-lightness-to: 80%;
-  border: solid 1px rgba(0, 0, 0, 0.4);
-  box-shadow: 0px 0px 4px rgba(0, 0, 0, 0.4) !important;
 }
 
+/* Adjust lightnesses for dark mode -- now selected/hover is lighter */
 @media (prefers-color-scheme: dark) {
   tab .tab-background {
     --firehacks-lightness-from: 20%;
@@ -60,7 +74,5 @@ tab[selected] .tab-background, tab:hover .tab-background {
   tab[selected] .tab-background, tab:hover .tab-background {
     --firehacks-lightness-from: 30%;
     --firehacks-lightness-to: 50%;
-    border: solid 1px rgba(255, 255, 255, 0.4);
-    box-shadow: 0px 0px 4px rgba(255, 255, 255, 0.4) !important;
   }
 }

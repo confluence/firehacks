@@ -10,6 +10,13 @@
   font-weight: 700 !important;
 }
 
+/* Add border to selected and hover tab;
+ * explicit copy of built-in box shadow for easy modification */
+tab[selected] .tab-background, tab:hover .tab-background {
+  border: solid 1px rgba(0, 0, 0, 0.4);
+  box-shadow: 0px 0px 4px rgba(0, 0, 0, 0.4) !important;
+}
+
 /* Italicise unread tabs (depends on function in JS) */
 .tabbrowser-tab[unread]:not([skipbackgroundnotify]) {
   font-style: italic !important;
@@ -28,5 +35,13 @@
     &:nth-child(1 of :not([hidden])) {
       padding-block-start: 2px !important;
     }
+  }
+}
+
+/* Alternate colours for dark mode */
+@media (prefers-color-scheme: dark) {
+  tab[selected] .tab-background, tab:hover .tab-background {
+    border: solid 1px rgba(255, 255, 255, 0.4);
+    box-shadow: 0px 0px 4px rgba(255, 255, 255, 0.4) !important;
   }
 }
