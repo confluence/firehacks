@@ -12,6 +12,8 @@ This is my personal set of tweaks, which I intend to maintain only for the lates
 
 ## Features
 
+<img align="right" src="screenshot.png">
+
 * Tab backgrounds are coloured by base domain, with an overlaid second colour for subdomains (or by scheme if there is no domain). `www.` is stripped off.
 * GitHub tabs are overlaid with colours for the first two path elements (usually account and repository).
 * Clicking once in the URL bar or search bar never selects the contents.
@@ -25,6 +27,8 @@ This is my personal set of tweaks, which I intend to maintain only for the lates
 * Tab styles for unread, selected, and hover.
 * Webpage links on the new tab page have no titles.
 * Pinned tabs are smaller and tab padding is reduced (and fixed).
+
+<br clear="right"/>
 
 ## How to use
 
