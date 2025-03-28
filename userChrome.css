@@ -10,10 +10,10 @@
   font-weight: 700 !important;
 }
 
-/* Add border to selected and hover tab;
+/* Add outline to selected and hover tab;
  * explicit copy of built-in box shadow for easy modification */
 tab[selected] .tab-background, tab:hover .tab-background {
-  border: solid 1px rgba(0, 0, 0, 0.4);
+  outline-color: rgba(0, 0, 0, 0.4) !important;
   box-shadow: 0px 0px 4px rgba(0, 0, 0, 0.4) !important;
 }
 
@@ -38,10 +38,39 @@ tab[selected] .tab-background, tab:hover .tab-background {
   }
 }
 
+/* Fixes for container and group markers */
+@media (-moz-bool-pref: "sidebar.verticalTabs") {
+.tab-context-line {
+  margin: 0 -6px !important;
+  width: 3px !important;
+  border-radius: 1px !important;
+  background: linear-gradient(rgba(255, 255, 255, 0.4), transparent) var(--identity-icon-color) !important;
+}
+tab-group {
+    &:not([collapsed])::before {
+      margin: 7px -2px 4px -2px !important;
+      width: 3px !important;
+      border-radius: 1px !important;
+      background: linear-gradient(rgba(255, 255, 255, 0.4), transparent) var(--tab-group-color) !important;
+    }
+}
+}
+
 /* Alternate colours for dark mode */
 @media (prefers-color-scheme: dark) {
   tab[selected] .tab-background, tab:hover .tab-background {
-    border: solid 1px rgba(255, 255, 255, 0.4);
+    outline-color: rgba(255, 255, 255, 0.4) !important;
     box-shadow: 0px 0px 4px rgba(255, 255, 255, 0.4) !important;
+  }
+  
+  @media (-moz-bool-pref: "sidebar.verticalTabs") {
+    .tab-context-line {
+      background: linear-gradient(transparent, rgba(0, 0, 0, 0.4)) var(--identity-icon-color) !important;
+    }
+    tab-group {
+        &:not([collapsed])::before {
+          background: linear-gradient(transparent, rgba(0, 0, 0, 0.4)) var(--tab-group-color) !important;
+        }
+    }
   }
 }
