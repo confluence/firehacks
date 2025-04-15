@@ -39,7 +39,7 @@ tab[selected] .tab-background, tab:hover .tab-background {
 }
 
 /* Fixes for container and group markers */
-@media (-moz-bool-pref: "sidebar.verticalTabs") {
+#tabbrowser-tabs[orient="vertical"] {
 .tab-context-line {
   margin: 0 -6px !important;
   width: 3px !important;
