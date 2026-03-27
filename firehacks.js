@@ -5,6 +5,7 @@
 
 function applyFirehacks(window){
     let searchbar = window.document.getElementById("searchbar");
+    let searchbar_new = window.document.getElementById("searchbar-new");
     let urlbar = window.gURLBar;
     let tabbrowser = window.gBrowser;
     let tabcontainer = tabbrowser.tabContainer;
@@ -19,22 +20,56 @@ function applyFirehacks(window){
 
     // Clear searchbar term after search and always open search in a background tab
     // Updated from legacy scripts
+    // This should work for the OLD searchbar widget (restore by setting 'browser.search.widget.new' to false)
+    // It now also hardcodes a new background tab as the search target, so you don't need the additional config value
 
     searchbar._firehacks_originalDoSearch = searchbar.doSearch;
     searchbar.doSearch = function(aData, aWhere, aEngine, aParams, isOneOff = false) {
-        if (aWhere == "tab") {
-            aParams.inBackground = true;
-        }
+        aWhere = "tab";
+        aParams.inBackground = true;
         this._firehacks_originalDoSearch(aData, aWhere, aEngine, aParams, isOneOff);
         this._textbox.value = "";
         window.gBrowser.selectedBrowser.focus();
     }
 
+    // Partial fix for the NEW searchbar widget
+    // It hardcodes a new background tab as the search target
+    // Currently not working correctly: affects the normal urlbar; also doesn't load in background if once-off search engine is used.
+    // To be fixed later. For now I'm using the old searchbar anyway.
+
+//     searchbar_new._firehacks_originalLoadURL = searchbar_new._loadURL;
+//     searchbar_new._loadURL = function(url, event, openUILinkWhere, params, resultDetails=null, browser=this.window.gBrowser.selectedBrowser) {
+//         openUILinkWhere  = "tab";
+//         params.inBackground = true;
+//         this._firehacks_originalLoadURL(url, event, openUILinkWhere, params, resultDetails, browser);
+//         this.value = "";
+//         window.gBrowser.selectedBrowser.focus();
+//     }
+
     // Never select all when clicking in urlbar or searchbar
     // Thanks to https://github.com/SebastianSimon/firefox-omni-tweaks for pointing me in the right direction
 
+    // This should work for the old searchbar widget (restore by setting 'browser.search.widget.new' to false)
     searchbar._maybeSelectAll = function() {}
+
+    // This should work for the old urlbar widget (obsolete on newer versions)
     urlbar._maybeSelectAll = function() {}
+
+    // This should work for the new urlbar widget
+    // We can no longer use maybeSelectAll because it's a private function now!
+    urlbar._firehacks_originalOnMousedown = urlbar._on_mousedown;
+    urlbar._on_mousedown = function(event) {
+        this._firehacks_originalOnMousedown(event);
+        this._preventClickSelectsAll = true;
+    }
+
+    // This should work for the new searchbar widget
+    // We can no longer use maybeSelectAll because it's a private function now!
+    searchbar_new._firehacks_originalOnMousedown = searchbar_new._on_mousedown;
+    searchbar_new._on_mousedown = function(event) {
+        this._firehacks_originalOnMousedown(event);
+        this._preventClickSelectsAll = true;
+    }
 
     // Set a hue on new tabs
     // Inspired by ChromaTabs and TST Colored Tabs
