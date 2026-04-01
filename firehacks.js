@@ -77,7 +77,8 @@ function applyFirehacks(window){
     
     tabcontainer._firehacks_getHue = async function(toHash, num = numHues, offset = hueOffset) {
         let part = toHash.length > 3 ? toHash.substring(0, 3) : toHash;
-        let hash = parseInt(part.replace(/[^0-9a-z]/g, "0"), 36) % 33325; // mod aaa - zzz range only
+        part = part.toLowerCase().replace(/[^0-9a-z]/g, "0");
+        let hash = parseInt(part, 36) % 33325; // mod aaa - zzz range only; numbers seldom appear
         let hue = Math.round(360 / num) * Math.round(hash * num / 33325);
         return hue + offset;
     }
