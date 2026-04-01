@@ -2,7 +2,8 @@
 
 tab .tab-background {
   /* This is overriden per element by the JS */
-  --firehacks-hue: 0deg;
+  --firehacks-hue-from: 0deg;
+  --firehacks-hue-to: 0deg;
   /* This never changes */
   --firehacks-saturation: 100%;
   /* These are adjusted for selected/hover tabs */
@@ -10,15 +11,18 @@ tab .tab-background {
   --firehacks-lightness-to: 90%;
   
   /* These are used for subdomain highlights */
-  --firehacks-subdomain-hue: 0deg;
+  --firehacks-subdomain-hue-from: 0deg;
+  --firehacks-subdomain-hue-to: 0deg;
   --firehacks-subdomain-alpha: 0%;
   --firehacks-subdomain-stop: 20px;
   
   /* These are used for highlights for the first two GitHub path elements
    * (Usually user/org and repo)
    */
-  --firehacks-github-hue-one: 0deg;
-  --firehacks-github-hue-two: 0deg;
+  --firehacks-github-hue-one-from: 0deg;
+  --firehacks-github-hue-one-to: 0deg;
+  --firehacks-github-hue-two-from: 0deg;
+  --firehacks-github-hue-two-to: 0deg;
   --firehacks-github-alpha-one: 0%;
   --firehacks-github-alpha-two: 0%;
   
@@ -33,21 +37,21 @@ tab .tab-background {
    * 1. Main domain colour
    */
   background: linear-gradient(315deg,
-    hsl(var(--firehacks-github-hue-one) var(--firehacks-saturation) var(--firehacks-lightness-to) / var(--firehacks-github-alpha-one)),
-    hsl(var(--firehacks-github-hue-one) var(--firehacks-saturation) var(--firehacks-lightness-from) / var(--firehacks-github-alpha-one)) var(--firehacks-github-stop-one),
+    hsl(var(--firehacks-github-hue-one-to) var(--firehacks-saturation) var(--firehacks-lightness-to) / var(--firehacks-github-alpha-one)),
+    hsl(var(--firehacks-github-hue-one-from) var(--firehacks-saturation) var(--firehacks-lightness-from) / var(--firehacks-github-alpha-one)) var(--firehacks-github-stop-one),
     transparent var(--firehacks-github-stop-one) 100%
   ), linear-gradient(225deg,
-    hsl(var(--firehacks-github-hue-two) var(--firehacks-saturation) var(--firehacks-lightness-to) / var(--firehacks-github-alpha-two)),
-    hsl(var(--firehacks-github-hue-two) var(--firehacks-saturation) var(--firehacks-lightness-from) / var(--firehacks-github-alpha-two)) var(--firehacks-github-stop-two),
+    hsl(var(--firehacks-github-hue-two-to) var(--firehacks-saturation) var(--firehacks-lightness-to) / var(--firehacks-github-alpha-two)),
+    hsl(var(--firehacks-github-hue-two-from) var(--firehacks-saturation) var(--firehacks-lightness-from) / var(--firehacks-github-alpha-two)) var(--firehacks-github-stop-two),
     transparent var(--firehacks-github-stop-two) 100%
   ), linear-gradient(135deg,
-    hsl(var(--firehacks-subdomain-hue) var(--firehacks-saturation) var(--firehacks-lightness-from) / var(--firehacks-subdomain-alpha)),
-    hsl(var(--firehacks-subdomain-hue) var(--firehacks-saturation) var(--firehacks-lightness-to) / var(--firehacks-subdomain-alpha)) var(--firehacks-subdomain-stop),
+    hsl(var(--firehacks-subdomain-hue-from) var(--firehacks-saturation) var(--firehacks-lightness-from) / var(--firehacks-subdomain-alpha)),
+    hsl(var(--firehacks-subdomain-hue-to) var(--firehacks-saturation) var(--firehacks-lightness-to) / var(--firehacks-subdomain-alpha)) var(--firehacks-subdomain-stop),
     transparent var(--firehacks-subdomain-stop) 100%
   ),
   linear-gradient(135deg,
-    hsl(var(--firehacks-hue) var(--firehacks-saturation) var(--firehacks-lightness-from)),
-    hsl(var(--firehacks-hue) var(--firehacks-saturation) var(--firehacks-lightness-to))
+    hsl(var(--firehacks-hue-from) var(--firehacks-saturation) var(--firehacks-lightness-from)),
+    hsl(var(--firehacks-hue-to) var(--firehacks-saturation) var(--firehacks-lightness-to))
   ) !important;
 }
 

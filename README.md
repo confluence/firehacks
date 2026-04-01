@@ -21,11 +21,12 @@ This is my personal set of tweaks, which I intend to maintain only for the lates
 * Tab backgrounds are coloured by base domain, with an overlaid second colour for subdomains (or by scheme if there is no domain). `www.` is stripped off.
 * GitHub tabs are overlaid with colours for the first two path elements (usually account and repository).
 * Clicking once in the URL bar or search bar never selects the contents.
-* The search term is cleared from the search bar after the search is performed.
+* **Additional search bar features currently implemented only for OLD search widget (the one with the search engine icons underneath), which (for now) you can still switch back to:**
+    * The search term is cleared from the search bar after the search is performed.
     * Focus is also always restored to the current tab.
-* Searches performed from the search bar that load in new tabs always load in background tabs and never switch focus away from the currently selected tab.
-    * This does not affect the search being opened in the current tab when it is blank, or searches from the URL bar opening in the current tab.
-    * Context menu searches still switch focus to the new tab; I never use this feature, but maybe I'll fix it anyway for consistency.
+    * Searches performed from the search bar that load in new tabs always load in background tabs and never switch focus away from the currently selected tab.
+        * This does not affect the search being opened in the current tab when it is blank, or searches from the URL bar opening in the current tab.
+        * Context menu searches still switch focus to the new tab; I never use this feature, but maybe I'll fix it anyway for consistency.
 * Unread tabs have an `unread` attribute again and can be styled.
     * Tabs restored from a previous session start off as unread; you can exclude them with a different attribute.
 * Tab styles for unread, selected, and hover.

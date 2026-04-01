@@ -75,12 +75,18 @@ function applyFirehacks(window){
     // Inspired by ChromaTabs and TST Colored Tabs
     // Additional overlays for subdomains, and first two path elements on GitHub
     
-    tabcontainer._firehacks_getHue = async function(toHash, num = numHues, offset = hueOffset) {
-        let part = toHash.length > 3 ? toHash.substring(0, 3) : toHash;
-        part = part.toLowerCase().replace(/[^0-9a-z]/g, "0");
-        let hash = parseInt(part, 36) % 33325; // mod aaa - zzz range only; numbers seldom appear
-        let hue = Math.round(360 / num) * Math.round(hash * num / 33325);
-        return hue + offset;
+    tabcontainer._firehacks_getHues = async function(toHash, num = numHues, offset = hueOffset) {
+        toHash = toHash.toLowerCase().replace(/[^0-9a-z]/g, "0") + "000000"; // right-pad to ensure length >= 6
+        let parts = [toHash.substring(0, 3), toHash.substring(3, 6)];
+        let hues = [];
+
+        for (const part of parts) {
+            let hash = parseInt(part, 36) % 33325; // mod aaa - zzz range only; numbers seldom appear
+            let hue = Math.round(360 / num) * Math.round(hash * num / 33325);
+            hues.push(hue + offset);
+        }
+
+        return hues;
     }
 
     tabcontainer._firehacks_setHueFromUrl = async function(event) {
@@ -107,15 +113,18 @@ function applyFirehacks(window){
         };
         
         let bgStyle = tab.querySelector(".tab-background").style;
-        let hue = await this._firehacks_getHue(toHash);
-        bgStyle.setProperty("--firehacks-hue", `${hue}deg`);
+        let [hue_from, hue_to] = await this._firehacks_getHues(toHash);
+        bgStyle.setProperty("--firehacks-hue-from", `${hue_from}deg`);
+        bgStyle.setProperty("--firehacks-hue-to", `${hue_to}deg`);
         
         if (toHashSubdomain) {
-            let subdomainHue = await this._firehacks_getHue(toHashSubdomain);
-            bgStyle.setProperty("--firehacks-subdomain-hue", `${subdomainHue}deg`);
+            let [subdomainHue_from, subdomainHue_to] = await this._firehacks_getHues(toHashSubdomain);
+            bgStyle.setProperty("--firehacks-subdomain-hue-from", `${subdomainHue_from}deg`);
+            bgStyle.setProperty("--firehacks-subdomain-hue-to", `${subdomainHue_to}deg`);
             bgStyle.setProperty("--firehacks-subdomain-alpha", "100%");
         } else {
-            bgStyle.removeProperty("--firehacks-subdomain-hue");
+            bgStyle.removeProperty("--firehacks-subdomain-hue-from");
+            bgStyle.removeProperty("--firehacks-subdomain-hue-to");
             bgStyle.removeProperty("--firehacks-subdomain-alpha");
         }
         
@@ -126,19 +135,23 @@ function applyFirehacks(window){
             [ghOne, ghTwo] = ghMatch.slice(1);
         }
         if (ghOne) {
-            let ghHueOne = await this._firehacks_getHue(ghOne, 45);
-            bgStyle.setProperty("--firehacks-github-hue-one", `${ghHueOne}deg`);
+            let [ghHueOne_from, ghHueOne_to] = await this._firehacks_getHues(ghOne);
+            bgStyle.setProperty("--firehacks-github-hue-one-from", `${ghHueOne_from}deg`);
+            bgStyle.setProperty("--firehacks-github-hue-one-to", `${ghHueOne_to}deg`);
             bgStyle.setProperty("--firehacks-github-alpha-one", "100%");
         } else {
-            bgStyle.removeProperty("--firehacks-github-hue-one");
+            bgStyle.removeProperty("--firehacks-github-hue-one-from");
+            bgStyle.removeProperty("--firehacks-github-hue-one-to");
             bgStyle.removeProperty("--firehacks-github-alpha-one");
         }
         if (ghTwo) {
-            let ghHueTwo = await this._firehacks_getHue(ghTwo, 45);
-            bgStyle.setProperty("--firehacks-github-hue-two", `${ghHueTwo}deg`);
+            let [ghHueTwo_from, ghHueTwo_to] = await this._firehacks_getHues(ghTwo);
+            bgStyle.setProperty("--firehacks-github-hue-two-from", `${ghHueTwo_from}deg`);
+            bgStyle.setProperty("--firehacks-github-hue-two-to", `${ghHueTwo_to}deg`);
             bgStyle.setProperty("--firehacks-github-alpha-two", "100%");
         } else {
-            bgStyle.removeProperty("--firehacks-github-hue-two");
+            bgStyle.removeProperty("--firehacks-github-hue-two-from");
+            bgStyle.removeProperty("--firehacks-github-hue-two-to");
             bgStyle.removeProperty("--firehacks-github-alpha-two");
         }
     }
