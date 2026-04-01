@@ -73,14 +73,12 @@ function applyFirehacks(window){
 
     // Set a hue on new tabs
     // Inspired by ChromaTabs and TST Colored Tabs
-    // Hash algorithm adapted from SHA1 suggestion in https://stackoverflow.com/questions/3426404/create-a-hexadecimal-colour-based-on-a-string-with-javascript
-    
-    // Additional overlays for first two path elements on GitHub 
+    // Additional overlays for subdomains, and first two path elements on GitHub
     
     tabcontainer._firehacks_getHue = async function(toHash, num = numHues, offset = hueOffset) {
-        let digest = await crypto.subtle.digest("SHA-1", new TextEncoder().encode(toHash));
-        let hash = new Uint32Array(digest.slice(0, 4))[0]; // truncate to 4 bytes = 32 bits
-        let hue = Math.round((hash % num) * 360 / num);
+        let part = toHash.length > 3 ? toHash.substring(0, 3) : toHash;
+        let hash = parseInt(part.replace(/[^0-9a-z]/g, "0"), 36) % 33325; // mod aaa - zzz range only
+        let hue = Math.round(360 / num) * Math.round(hash * num / 33325);
         return hue + offset;
     }
 
