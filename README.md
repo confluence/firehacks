@@ -43,9 +43,10 @@ You need root access. I have no idea how to set this up on any system except my 
 * `autoconfig.js` has to be in `/defaults/pref/` relative to that directory.
 * All the CSS files go in the `chrome` subdirectory of your Firefox profile.
 * You have to enable `toolkit.legacyUserProfileCustomizations.stylesheets` in `about:config`.
-* There are two preferences for these tweaks:
-    * `extensions.firehacks.num_hues`: how many different hues to use to colour tabs (minimum: 1; maximum: 360)
-    * `extensions.firehacks.hue_offset`: an offset to apply to the hues (in degrees)
+* Preferences for these tweaks:
+    * `extensions.firehacks.numHues`: how many different hues to use to colour tabs (minimum: 1; maximum: 360)
+    * `extensions.firehacks.hueOffset`: an offset to apply to the hues (in degrees)
+    * `extensions.firehacks.stripGithubPrefixes`: a list of prefixes to strip from GitHub path elements (comma-separated)
 * If you change anything in any of these files, or the preferences, you have to restart Firefox for the changes to be applied.
 
 ## How to develop

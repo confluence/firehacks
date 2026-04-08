@@ -13,10 +13,12 @@ function applyFirehacks(window){
     let defaultPrefs = Services.prefs.getDefaultBranch("extensions.firehacks.");
     defaultPrefs.setIntPref("numHues", 360);
     defaultPrefs.setIntPref("hueOffset", 0);
+    defaultPrefs.setCharPref("stripGithubPrefixes", "");
 
     let prefs = Services.prefs.getBranch("extensions.firehacks.");
     let numHues = Math.max(Math.min(prefs.getIntPref("numHues"), 360), 1);
     let hueOffset = prefs.getIntPref("hueOffset");
+    let stripGithubPrefixes = prefs.getCharPref("stripGithubPrefixes");
 
     // Clear searchbar term after search and always open search in a background tab
     // Updated from legacy scripts
@@ -25,8 +27,9 @@ function applyFirehacks(window){
 
     searchbar._firehacks_originalDoSearch = searchbar.doSearch;
     searchbar.doSearch = function(aData, aWhere, aEngine, aParams, isOneOff = false) {
-        aWhere = "tab";
-        aParams.inBackground = true;
+        if (aWhere == "tab") {
+            aParams.inBackground = true;
+        }
         this._firehacks_originalDoSearch(aData, aWhere, aEngine, aParams, isOneOff);
         this._textbox.value = "";
         window.gBrowser.selectedBrowser.focus();
@@ -39,8 +42,9 @@ function applyFirehacks(window){
 
 //     searchbar_new._firehacks_originalLoadURL = searchbar_new._loadURL;
 //     searchbar_new._loadURL = function(url, event, openUILinkWhere, params, resultDetails=null, browser=this.window.gBrowser.selectedBrowser) {
-//         openUILinkWhere  = "tab";
-//         params.inBackground = true;
+//         if (openUILinkWhere == "tab") {
+//             aParams.inBackground = true;
+//         }
 //         this._firehacks_originalLoadURL(url, event, openUILinkWhere, params, resultDetails, browser);
 //         this.value = "";
 //         window.gBrowser.selectedBrowser.focus();
@@ -74,9 +78,15 @@ function applyFirehacks(window){
     // Set a hue on new tabs
     // Inspired by ChromaTabs and TST Colored Tabs
     // Additional overlays for subdomains, and first two path elements on GitHub
-    
-    tabcontainer._firehacks_getHues = async function(toHash, num = numHues, offset = hueOffset) {
-        toHash = toHash.toLowerCase().replace(/[^0-9a-z]/g, "0") + "000000"; // right-pad to ensure length >= 6
+    tabcontainer._firehacks_getHues = async function(toHash, stripPrefixes = "", num = numHues, offset = hueOffset) {
+        if (stripPrefixes) {
+            const stripRe = new RegExp("^(" + stripPrefixes.replace(/,/g, "|") + ")");
+            toHash = toHash.replace(stripRe, "");
+        }
+
+        toHash = toHash.toLowerCase().replace(/[^0-9a-z]/g, ""); // strip illegal characters
+        toHash = toHash + "0".repeat(Math.max(6 - toHash.length, 0)); // right-pad to ensure length >= 6
+
         let parts = [toHash.substring(0, 3), toHash.substring(3, 6)];
         let hues = [];
 
@@ -135,7 +145,7 @@ function applyFirehacks(window){
             [ghOne, ghTwo] = ghMatch.slice(1);
         }
         if (ghOne) {
-            let [ghHueOne_from, ghHueOne_to] = await this._firehacks_getHues(ghOne);
+            let [ghHueOne_from, ghHueOne_to] = await this._firehacks_getHues(ghOne, stripGithubPrefixes);
             bgStyle.setProperty("--firehacks-github-hue-one-from", `${ghHueOne_from}deg`);
             bgStyle.setProperty("--firehacks-github-hue-one-to", `${ghHueOne_to}deg`);
             bgStyle.setProperty("--firehacks-github-alpha-one", "100%");
@@ -145,7 +155,7 @@ function applyFirehacks(window){
             bgStyle.removeProperty("--firehacks-github-alpha-one");
         }
         if (ghTwo) {
-            let [ghHueTwo_from, ghHueTwo_to] = await this._firehacks_getHues(ghTwo);
+            let [ghHueTwo_from, ghHueTwo_to] = await this._firehacks_getHues(ghTwo, stripGithubPrefixes);
             bgStyle.setProperty("--firehacks-github-hue-two-from", `${ghHueTwo_from}deg`);
             bgStyle.setProperty("--firehacks-github-hue-two-to", `${ghHueTwo_to}deg`);
             bgStyle.setProperty("--firehacks-github-alpha-two", "100%");
