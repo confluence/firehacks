@@ -60,15 +60,22 @@ function applyFirehacks(window){
     urlbar._maybeSelectAll = function() {}
 
     // This should work for the new urlbar widget
-    // We can no longer use maybeSelectAll because it's a private function now!
-    urlbar._firehacks_originalOnMousedown = urlbar._on_mousedown;
-    urlbar._on_mousedown = function(event) {
-        this._firehacks_originalOnMousedown(event);
-        this._preventClickSelectsAll = true;
+    // We can no longer override maybeSelectAll or preventClickSelectsAll because they're both private.
+    // Instead, after an _on_click for a subset of targets that called #maybeSelectAll, we deselect.
+    // We can't reimplement this part of the function to stop calling #maybeSelectAll, because we can't call #maybeUntrimUrl.
+    // I'm not doing this for _on_auxclick (for clicks other than left).
+    urlbar._firehacks_originalOnClick = urlbar._on_click;
+    urlbar._on_click = function(event) {
+        let start = this.selectionStart;
+        let end = this.selectionEnd;
+        this._firehacks_originalOnClick(event);
+        if (event.target == this.inputField || event.target == this._inputContainer) {
+            this.inputField.setSelectionRange(start, end);
+        }
     }
 
-    // This should work for the new searchbar widget
-    // We can no longer use maybeSelectAll because it's a private function now!
+    // This should still work for the new searchbar widget
+    // We can no longer use maybeSelectAll, but _preventClickSelectsAll is still public FOR NOW.
     searchbar_new._firehacks_originalOnMousedown = searchbar_new._on_mousedown;
     searchbar_new._on_mousedown = function(event) {
         this._firehacks_originalOnMousedown(event);
