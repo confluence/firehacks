@@ -2,7 +2,7 @@
 
 /* Make the pinned tabs narrower (default is HUGE) */
 :root {
-  --tab-pinned-min-width-expanded: 30px !important;
+  --tab-pinned-min-width-expanded: var(--tab-min-height) !important;
 }
 
 /* Bold selected and hover tab text */
@@ -23,20 +23,20 @@ tab[selected] .tab-background, tab:hover .tab-background {
 }
 
 /* Reduce tab vertical padding */
-#tabbrowser-tabs[orient="vertical"] {
+/*#tabbrowser-tabs[orient="vertical"] {
   & .tabbrowser-tab {
     padding-block: 2px !important;
   }
-}
+}*/
 
 /* The default is different even for pinned tabs, and messes them up. */
-#tabbrowser-tabs[orient="vertical"] {
+/*#tabbrowser-tabs[orient="vertical"] {
   & .tabbrowser-tab {
     &:nth-child(1 of :not([hidden])) {
       padding-block-start: 2px !important;
     }
   }
-}
+}*/
 
 /* Fixes for container and group markers */
 #tabbrowser-tabs[orient="vertical"] {
@@ -67,10 +67,8 @@ tab[selected] .tab-background, tab:hover .tab-background {
     .tab-context-line {
       background: linear-gradient(transparent, rgba(0, 0, 0, 0.4)) var(--identity-icon-color) !important;
     }
-    tab-group {
-        &:not([collapsed])::before {
-          background: linear-gradient(transparent, rgba(0, 0, 0, 0.4)) var(--tab-group-color) !important;
-        }
+    .tab-group-line {
+      background: linear-gradient(transparent, rgba(0, 0, 0, 0.4)) var(--tab-group-color) !important;
     }
   }
 }
