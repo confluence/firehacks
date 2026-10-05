@@ -1,7 +1,7 @@
 @import url("tabColour.css");
 
 /* Make the pinned tabs narrower (default is HUGE)
- * Fix the too-large space nbetween tabs in compact mode
+ * Fix the too-large space between tabs in compact mode
  */
 :root {
   --tab-pinned-min-width-expanded: calc(var(--tab-min-height) + 2 * 2px) !important;
