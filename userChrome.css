@@ -53,6 +53,11 @@ tab[selected] .tab-background, tab:hover .tab-background {
   }
 }
 
+/* Make title changed indicator a neutral colour */
+.tab-content[titlechanged]:not([selected]) {
+  background-image: radial-gradient(circle, white 1px, black 2px, transparent 2px) !important;
+}
+
 /* Alternate colours for dark mode */
 @media (prefers-color-scheme: dark) {
   tab[selected] .tab-background, tab:hover .tab-background {
@@ -67,5 +72,9 @@ tab[selected] .tab-background, tab:hover .tab-background {
     .tab-group-line {
       background: linear-gradient(transparent, rgba(0, 0, 0, 0.4)) var(--tab-group-color) !important;
     }
+  }
+
+  .tab-content[titlechanged]:not([selected]) {
+    background-image: radial-gradient(circle, black 1px, white 2px, transparent 2px) !important;
   }
 }
